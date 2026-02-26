@@ -35,15 +35,8 @@ export default function ReservationFormScreen({ route, navigation }) {
       return;
     }
 
-    // PAKET KONTROLÜ KALDIRILDI - Giriş yapılmadan da kullanılabilir
-    
-    // Rezervasyon talebini kaydet (eğer user varsa purchasePackage çağır)
+    // Direkt başarılı - giriş şartı yok, paket satın alma yok
     let result = { success: true };
-    
-    if (user) {
-      // Giriş yapmışsa paketi satın al
-      result = await purchasePackage(selectedPackage);
-    }
     
     if (result.success) {
       const packagePrice = type === 'birthday' 
