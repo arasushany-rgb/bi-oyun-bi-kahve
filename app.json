@@ -1,0 +1,56 @@
+{
+  "expo": {
+    "name": "Bi Oyun Bi Kahve",
+    "slug": "bi-oyun-bi-kahve",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#7CB342"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.bioyunbikahve.app",
+      "buildNumber": "1",
+      "infoPlist": {
+        "NSCameraUsageDescription": "QR kod okutmak için kamera izni gereklidir",
+        "NSPhotoLibraryUsageDescription": "Fotoğraf yüklemek için galeri erişimi gereklidir"
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#7CB342"
+      },
+      "package": "com.bioyunbikahve.app",
+      "versionCode": 1,
+      "permissions": [
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "QR kod okutmak için kamera izni gereklidir"
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "bi-oyun-bi-kahve"
+      }
+    }
+  }
+}

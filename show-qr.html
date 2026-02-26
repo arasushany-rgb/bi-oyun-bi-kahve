@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bi Oyun Bi Kahve - QR Kod</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #81C784 0%, #E8F5E9 100%);
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 500px;
+        }
+        h1 {
+            color: #5D4037;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #8D6E63;
+            margin-bottom: 30px;
+            font-size: 18px;
+        }
+        #qrcode {
+            margin: 30px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            display: inline-block;
+        }
+        .instructions {
+            background: #FFF8E1;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            text-align: left;
+        }
+        .instructions h3 {
+            color: #5D4037;
+            margin-top: 0;
+        }
+        .instructions ol {
+            color: #8D6E63;
+            line-height: 1.8;
+        }
+        .url-box {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            word-break: break-all;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .button {
+            background: linear-gradient(135deg, #FFB74D 0%, #FFF59D 100%);
+            color: #5D4037;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(255, 183, 77, 0.4);
+        }
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 183, 77, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎈 Bi Oyun Bi Kahve 🎈</h1>
+        <p class="subtitle">Uygulamayı Başlatmak İçin QR Kod</p>
+        
+        <div id="qrcode"></div>
+        
+        <div class="url-box" id="urlBox">
+            QR kod oluşturuluyor...
+        </div>
+        
+        <button class="button" onclick="location.reload()">🔄 Yenile</button>
+        
+        <div class="instructions">
+            <h3>📱 Nasıl Kullanılır?</h3>
+            <ol>
+                <li><strong>Expo Go</strong> uygulamasını indirin:
+                    <ul>
+                        <li>Android → Play Store'dan</li>
+                        <li>iOS → App Store'dan</li>
+                    </ul>
+                </li>
+                <li>Expo Go uygulamasını açın</li>
+                <li>Yukarıdaki <strong>QR kodu telefonunuzla okutun</strong></li>
+                <li>Uygulama otomatik olarak yüklenecek!</li>
+            </ol>
+            <p><strong>Not:</strong> Telefonunuz ve bilgisayarınız aynı Wi-Fi ağında olmalı!</p>
+        </div>
+    </div>
+
+    <script>
+        // Get local IP and generate QR
+        async function getLocalIP() {
+            try {
+                const response = await fetch('http://localhost:8081');
+                return 'localhost';
+            } catch (e) {
+                return 'localhost';
+            }
+        }
+
+        async function generateQR() {
+            // Try to get the Expo URL
+            let expoUrl = 'exp://localhost:8081';
+            
+            // Check if running
+            try {
+                const response = await fetch('http://localhost:8081/status', { mode: 'no-cors' });
+                // If server is running, use localhost
+                expoUrl = 'exp://localhost:8081';
+            } catch (e) {
+                console.log('Expo server might not be running');
+            }
+
+            // Generate QR code
+            QRCode.toCanvas(document.createElement('canvas'), expoUrl, {
+                width: 300,
+                margin: 2,
+                color: {
+                    dark: '#5D4037',
+                    light: '#FFFFFF'
+                }
+            }, function (error, canvas) {
+                if (error) {
+                    console.error(error);
+                    document.getElementById('qrcode').innerHTML = '<p style="color: red;">QR kod oluşturulamadı!</p>';
+                    return;
+                }
+                document.getElementById('qrcode').innerHTML = '';
+                document.getElementById('qrcode').appendChild(canvas);
+                document.getElementById('urlBox').textContent = expoUrl;
+            });
+        }
+
+        // Generate on load
+        generateQR();
+
+        // Auto refresh every 5 seconds to check if Expo is running
+        setInterval(() => {
+            fetch('http://localhost:8081/status', { mode: 'no-cors' })
+                .then(() => console.log('Expo running'))
+                .catch(() => console.log('Checking...'));
+        }, 5000);
+    </script>
+</body>
+</html>
