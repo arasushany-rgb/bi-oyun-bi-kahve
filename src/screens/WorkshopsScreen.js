@@ -33,7 +33,18 @@ export default function WorkshopsScreen({ navigation }) {
       return;
     }
 
-    // GİRİŞ YAPILMADAN → Direkt rezervasyon formuna git
+    if (user) {
+      Alert.alert(
+        'Paket Satın Alma',
+        'Paket satın almak için Hesabım kısmına gidin.',
+        [
+          { text: 'İptal', style: 'cancel' },
+          { text: 'Hesabıma Git', onPress: () => navigation.navigate('Profile') },
+        ]
+      );
+      return;
+    }
+
     navigation.navigate('ReservationForm', {
       package: selectedPackage,
       type: 'workshop'
@@ -41,16 +52,18 @@ export default function WorkshopsScreen({ navigation }) {
   };
 
   const openReservationModal = (workshop) => {
-    // GİRİŞ YAPILMIŞSA → createReservation kullan (modal aç)
     if (user) {
-      setSelectedWorkshop(workshop);
-      setReservationDate('');
-      setReservationTime('');
-      setModalVisible(true);
+      Alert.alert(
+        'Katılım Rezervasyonu',
+        'Atölye rezervasyonu için Hesabım kısmına gidin.',
+        [
+          { text: 'İptal', style: 'cancel' },
+          { text: 'Hesabıma Git', onPress: () => navigation.navigate('Profile') },
+        ]
+      );
       return;
     }
 
-    // GİRİŞ YAPILMADIYSA → Rezervasyon formuna git
     navigation.navigate('ReservationForm', {
       package: {
         id: 'workshop-single',

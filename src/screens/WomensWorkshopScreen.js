@@ -18,13 +18,18 @@ export default function WomensWorkshopScreen({ navigation }) {
   const workshops = getWomensWorkshops();
 
   const handleReservation = (workshop) => {
-    // GİRİŞ YAPILMIŞSA → WomensWorkshopReservation kullan
     if (user) {
-      navigation.navigate('WomensWorkshopReservation', { workshop });
+      Alert.alert(
+        'Katılım Rezervasyonu',
+        'Workshop rezervasyonu için Hesabım kısmına gidin.',
+        [
+          { text: 'İptal', style: 'cancel' },
+          { text: 'Hesabıma Git', onPress: () => navigation.navigate('Profile') },
+        ]
+      );
       return;
     }
     
-    // GİRİŞ YAPILMADIYSA → Rezervasyon formuna git
     navigation.navigate('ReservationForm', {
       package: {
         id: 'womens-workshop',
